@@ -59,6 +59,7 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
 
 ### Linux ###
 *~
@@ -160,3 +161,5 @@ bin/
 
 # Simulation GUI and other tools window save file
 *-window.json
+=======
+>>>>>>> c856ddab54571cd5d61a63436969078d4cb1136c
