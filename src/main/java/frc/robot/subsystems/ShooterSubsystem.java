@@ -9,10 +9,11 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
-public class ShooterSubsystem {
+public class ShooterSubsystem extends SubsystemBase{
     private final CANSparkMax shootMotor;
     private final RelativeEncoder shootEncoder;
     private final SparkMaxPIDController shootPID;
@@ -34,11 +35,12 @@ public class ShooterSubsystem {
         this.shootPID.setP(Constants.Shooter.kP);
         this.shootPID.setI(Constants.Shooter.kI);
         this.shootPID.setD(Constants.Shooter.kD);
+        this.shootPID.setIZone(Constants.Shooter.kIZone);
         this.shootPID.setFF(Constants.Shooter.kFF);
         this.shootPID.setOutputRange(Constants.Shooter.kMinOutput, Constants.Shooter.kMaxOutput);
 
         // set up data logging
-        this.pointsUntilReady = 30;
+        this.pointsUntilReady = 20;
         this.lastData = (List<Double>)(new ArrayList<Double>());
 
         this.setPoint = 0.0D; // given value in ShootCommand when run in velocity mode
@@ -69,9 +71,8 @@ public class ShooterSubsystem {
     public void periodic() {
         addDatapoint(lastData, shootEncoder.getVelocity());
         averageValue = calculateAverage(lastData);
-        System.out.println("Shooter Speed: " + shootEncoder.getVelocity());
-        SmartDashboard.putNumber("Shooter Speed", shootEncoder.getVelocity());
-        SmartDashboard.putNumber("Shooter Average Speed", averageValue);
+        SmartDashboard.putNumber("ShooterSpeed", shootEncoder.getVelocity());
+        SmartDashboard.putNumber("ShooterAverageSpeed", averageValue);
     }
 
     private double calculateAverage(List <Double> marks) {

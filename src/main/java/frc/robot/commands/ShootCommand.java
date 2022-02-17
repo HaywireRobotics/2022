@@ -7,27 +7,32 @@ public class ShootCommand extends CommandBase {
     private final ShooterSubsystem m_subsystem;
     private final double shooterSpeed;
     private final boolean percentMode;
+    private boolean reachedSpeed;
 
     public ShootCommand(ShooterSubsystem subsystem, double speed, boolean _percentMode) {
         this.m_subsystem = subsystem;
         this.shooterSpeed = speed;
         this.percentMode = _percentMode;
-        if (!percentMode) {
-            this.m_subsystem.setSetPoint(-shooterSpeed);
-        }
+        this.reachedSpeed = false;
     }
 
     @Override
-    public void initialize() {};
+    public void initialize() {
+        // if (!percentMode) {
+            // this.m_subsystem.setSetPoint(-shooterSpeed);
+        // }
+    };
 
     @Override
     public void execute() {
         if (percentMode) {
             m_subsystem.runShootMotorPercent(-shooterSpeed);
         } else {
+            m_subsystem.setSetPoint(-shooterSpeed);
             m_subsystem.runPID();
-            if (m_subsystem.isReady()) {
+            if (m_subsystem.isReady() && !reachedSpeed) {
                 System.out.println("---- READY TO SHOOT ----");
+                this.reachedSpeed = true;
             }
         }
     }

@@ -66,7 +66,10 @@ public class RobotContainer {
     new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, 0.6D, true));
     new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, 0.8D, true));
 
-    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, 2000, false));
+    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, 2000, false));
+    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, 3000, false));
+    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, 4000, false));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, 5000, false));
     // new JoystickButton(manipulatorLeftStick, 4).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
     // new JoystickButton(manipulatorLeftStick, 5).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
   }

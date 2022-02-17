@@ -38,14 +38,19 @@ public final class Constants {
 
         // parameters for PID controller
         public static final double kP = 5e-5;
-        public static final double kI = 1e-6;
+        public static final double kI = 8e-7;
         public static final double kD = 0.0D;
-        public static final double kFF = 0.000156;
+        public static final double kIZone = 0.0D;
+        public static final double kFF = 0.0000156;
         public static final double kMaxOutput = 1.0D;
         public static final double kMinOutput = -1.0D;
         public static final int kMaxVel = 6000; // rpm
         public static final int kMaxAcc = 1500;
 
+    }
+
+    public static final class Intake {
+        public static final int armPort = 0; //pls update
     }
 
 }
