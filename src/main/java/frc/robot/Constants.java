@@ -29,9 +29,6 @@ public final class Constants {
 
     }
 
-    public static final class ShootAngle {
-        public static final int angleMotor = 2;
-    }
 
     public static final class Shooter {
         public static final int shooterPort = 27;
@@ -50,7 +47,25 @@ public final class Constants {
     }
 
     public static final class Intake {
-        public static final int armPort = 0; //pls update
+        public static final int armPort = 25;
+        public static final int intakePort = 2; // VICTOR SPX
+        // PID values for arm position feedback
+        public static final double kP = 0.1D;
+        public static final double kI = 1e-4;
+        public static final double kD = 1;
+        public static final double kIZone = 0;
+        public static final double kFF = 0;
+        public static final double kMaxOutput = 1.0D;
+        public static final double kMinOutput = -1.0D;
+    }
+
+    public static final class Index {
+        public static final int indexPort = 24;
+    }
+
+    public static final class Climber {
+        public static final int rightWinchPort = 3;
+        public static final int leftWinchPort = 7;
     }
 
 }

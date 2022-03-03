@@ -7,7 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.RunIndexCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IndexSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 // import frc.robot.subsystems.ShootAngleSubsystem;
 // import frc.robot.commands.AdjustShootAngle;
@@ -30,6 +34,8 @@ public class RobotContainer {
   private final DriveCommand m_autoCommand;
   // private final ShootAngleSubsystem m_shootAngleSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
+  private final IntakeSubsystem m_intakeSubsystem;
+  private final IndexSubsystem m_indexSubsystem;
 
   public static final Joystick driverRightStick = new Joystick(1);
   public static final Joystick driverLeftStick = new Joystick(0);
@@ -45,6 +51,8 @@ public class RobotContainer {
     this.m_driveSubsystem.setDefaultCommand(new DriveCommand(this.m_driveSubsystem, driverLeftStick, driverRightStick));
     
     this.m_shooterSubsystem = new ShooterSubsystem();
+    this.m_intakeSubsystem = new IntakeSubsystem();
+    this.m_indexSubsystem = new IndexSubsystem();
 
     configureButtonBindings();
   
@@ -61,15 +69,21 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverRightStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
     
-    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, 0.2D, true));
-    new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, 0.4D, true));
-    new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, 0.6D, true));
-    new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, 0.8D, true));
+    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.2D, true));
+    new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.4D, true));
+    new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.6D, true));
+    new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.8D, true));
 
-    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, 2000, false));
-    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, 3000, false));
-    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, 4000, false));
-    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, 5000, false));
+    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 2000, false));
+    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 3000, false));
+    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 4000, false));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 5000, false));
+
+    new JoystickButton(manipulatorLeftStick, 8).whileHeld(new RunIndexCommand(m_indexSubsystem, 0.3D));
+    new JoystickButton(manipulatorLeftStick, 9).whileHeld(new RunIndexCommand(m_indexSubsystem, -0.3D));
+
+    new JoystickButton(manipulatorRightStick, 8).whileHeld(new IntakeCommand(m_intakeSubsystem, 0.65D));
+    new JoystickButton(manipulatorRightStick, 9).whileHeld(new IntakeCommand(m_intakeSubsystem, -0.65D));
     // new JoystickButton(manipulatorLeftStick, 4).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
     // new JoystickButton(manipulatorLeftStick, 5).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
   }
