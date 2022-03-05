@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -14,14 +13,14 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase{
     private final CANSparkMax armMotor;
-    private final WPI_VictorSPX intakeMotor;
+    private final CANSparkMax intakeMotor;
 
     private final RelativeEncoder armEncoder;
     private final SparkMaxPIDController armPID;
 
     public IntakeSubsystem() {
         this.armMotor = new CANSparkMax(Constants.Intake.armPort, MotorType.kBrushless);
-        this.intakeMotor = new WPI_VictorSPX(Constants.Intake.intakePort); // may be subject to change
+        this.intakeMotor = new CANSparkMax(Constants.Intake.intakePort, MotorType.kBrushless); // may be subject to change
         this.armMotor.restoreFactoryDefaults();
 
         this.armEncoder = armMotor.getEncoder();
@@ -40,8 +39,10 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     // move arm to certain angle, will need strict range and conversion
-    public void moveArm(double position) { // position needs to be a number of rotations
-        armPID.setReference(position, ControlType.kPosition);
+    public void moveArm(double position) {
+        if (position > Constants.Intake.minAngle && position < Constants.Intake.maxAngle) {
+            armPID.setReference(position, ControlType.kPosition);
+        }
     }
     
 }

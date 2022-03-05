@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RunIndexCommand;
@@ -42,6 +43,8 @@ public class RobotContainer {
   public static final Joystick manipulatorRightStick = new Joystick(3);
   public static final Joystick manipulatorLeftStick = new Joystick(2);
 
+  public double testShooterSpeed;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -53,6 +56,9 @@ public class RobotContainer {
     this.m_shooterSubsystem = new ShooterSubsystem();
     this.m_intakeSubsystem = new IntakeSubsystem();
     this.m_indexSubsystem = new IndexSubsystem();
+
+    this.testShooterSpeed = 0;
+    SmartDashboard.putNumber("TestShooterSpeed", this.testShooterSpeed);
 
     configureButtonBindings();
   
@@ -69,21 +75,23 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverRightStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
     
-    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.2D, true));
-    new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.4D, true));
-    new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.6D, true));
-    new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 0.8D, true));
+    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(0.2D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(0.4D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(0.6D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(0.8D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
 
-    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 2000, false));
-    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 3000, false));
-    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 4000, false));
-    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem, 5000, false));
+    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(2000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(3000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(4000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(5000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
 
-    new JoystickButton(manipulatorLeftStick, 8).whileHeld(new RunIndexCommand(m_indexSubsystem, 0.3D));
-    new JoystickButton(manipulatorLeftStick, 9).whileHeld(new RunIndexCommand(m_indexSubsystem, -0.3D));
 
-    new JoystickButton(manipulatorRightStick, 8).whileHeld(new IntakeCommand(m_intakeSubsystem, 0.65D));
-    new JoystickButton(manipulatorRightStick, 9).whileHeld(new IntakeCommand(m_intakeSubsystem, -0.65D));
+    new JoystickButton(manipulatorLeftStick, 8).whileHeld(new RunIndexCommand(m_indexSubsystem, 0.4D));
+    new JoystickButton(manipulatorLeftStick, 9).whileHeld(new RunIndexCommand(m_indexSubsystem, -0.4D));
+
+    new JoystickButton(manipulatorRightStick, 8).whileHeld(new IntakeCommand(m_intakeSubsystem, 0.5D));
+    new JoystickButton(manipulatorRightStick, 9).whileHeld(new IntakeCommand(m_intakeSubsystem, -0.5D));
     // new JoystickButton(manipulatorLeftStick, 4).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
     // new JoystickButton(manipulatorLeftStick, 5).whileHeld((Command) new AdjustShootAngle(m_shootAngleSubsystem, manipulatorLeftStick));
   }
@@ -96,5 +104,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
+  }
+
+  // @Override
+  public void teleopPeriodic() {
+    testShooterSpeed = SmartDashboard.getNumber("TestShooterSpeed", 0);
   }
 }

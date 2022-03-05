@@ -13,7 +13,7 @@ public class ShootCommand extends CommandBase {
     private final boolean percentMode;
     private boolean reachedSpeed;
 
-    public ShootCommand(ShooterSubsystem subsystem, IntakeSubsystem intake, IndexSubsystem index, double speed, boolean _percentMode) {
+    public ShootCommand(double speed, boolean _percentMode, ShooterSubsystem subsystem, IntakeSubsystem intake, IndexSubsystem index) {
         this.m_subsystem = subsystem;
         this.m_intake = intake;
         this.m_index = index;

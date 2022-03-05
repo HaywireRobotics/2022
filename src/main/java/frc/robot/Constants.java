@@ -22,8 +22,8 @@ public final class Constants {
     // }
 
     public static final class Drive {
-        public static final int rightFrontPort = 23;
-        public static final int rightBackPort = 26;
+        public static final int rightFrontPort = 26;
+        public static final int rightBackPort = 23;
         public static final int leftFrontPort = 21;
         public static final int leftBackPort = 22;
 
@@ -48,15 +48,17 @@ public final class Constants {
 
     public static final class Intake {
         public static final int armPort = 25;
-        public static final int intakePort = 2; // VICTOR SPX
+        public static final int intakePort = 0; // neo mini
         // PID values for arm position feedback
         public static final double kP = 0.1D;
         public static final double kI = 1e-4;
         public static final double kD = 1;
         public static final double kIZone = 0;
         public static final double kFF = 0;
-        public static final double kMaxOutput = 1.0D;
-        public static final double kMinOutput = -1.0D;
+        public static final double kMaxOutput = .01D;
+        public static final double kMinOutput = -.01D;
+        public static final double maxAngle = 0;
+        public static final double minAngle = -11;
     }
 
     public static final class Index {
