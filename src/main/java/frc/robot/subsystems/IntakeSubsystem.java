@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +23,7 @@ public class IntakeSubsystem extends SubsystemBase{
         this.armMotor = new CANSparkMax(Constants.Intake.armPort, MotorType.kBrushless);
         this.intakeMotor = new CANSparkMax(Constants.Intake.intakePort, MotorType.kBrushless); // may be subject to change
         this.armMotor.restoreFactoryDefaults();
+        this.armMotor.setIdleMode(IdleMode.kBrake);
 
         this.armEncoder = armMotor.getEncoder();
         this.armPID = armMotor.getPIDController();
@@ -38,11 +40,22 @@ public class IntakeSubsystem extends SubsystemBase{
         intakeMotor.set(speed);
     }
 
-    // move arm to certain angle, will need strict range and conversion
-    public void moveArm(double position) {
-        if (position > Constants.Intake.minAngle && position < Constants.Intake.maxAngle) {
-            armPID.setReference(position, ControlType.kPosition);
+    public double getPosition() {
+        return armEncoder.getPosition();
+    }
+    
+    // move arm, but not if it is on the edges of what is allowed
+    public void moveArm(double speed) {
+        double angle = armEncoder.getPosition();
+        if (speed < 0 && angle > Constants.Intake.minAngle) {
+            armMotor.set(speed);
+        } else if (speed > 0 && angle < Constants.Intake.maxAngle) {
+            armMotor.set(speed);
         }
+    }
+
+    public void stopArm() {
+        armMotor.set(0.0D);
     }
     
 }

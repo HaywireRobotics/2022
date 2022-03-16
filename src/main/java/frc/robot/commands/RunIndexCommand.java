@@ -7,7 +7,7 @@ public class RunIndexCommand extends CommandBase{
     private final IndexSubsystem m_subsystem;
     private final double speed;
 
-    public RunIndexCommand(IndexSubsystem subsystem, double _speed) {
+    public RunIndexCommand(double _speed, IndexSubsystem subsystem) {
         this.m_subsystem = subsystem;
         this.speed = _speed;
     }

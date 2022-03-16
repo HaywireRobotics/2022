@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -27,6 +29,19 @@ public final class Constants {
         public static final int leftFrontPort = 21;
         public static final int leftBackPort = 22;
 
+        // update these bois later
+
+        public static final double ksVolts = 0.173;
+        public static final double kvVoltsSecondsPerMeter = 2.78;
+        public static final double kaVoltSecondsSquarePerMeter = 0.509;
+        public static final double kP = 0.00362/10 * 0.75; //0.0000238; //2.38;
+        public static final double kD = 0.0D;
+        public static final double kFF = 0.000015*10*10*0.15;        public static final double kTrackwidthMeters = 1.22388; // check here if circlessss
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+        public static final double kMaxSpeedMetersPerSecond = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
     }
 
 
@@ -48,7 +63,7 @@ public final class Constants {
 
     public static final class Intake {
         public static final int armPort = 25;
-        public static final int intakePort = 0; // neo mini
+        public static final int intakePort = 20; // neo mini
         // PID values for arm position feedback
         public static final double kP = 0.1D;
         public static final double kI = 1e-4;
@@ -57,8 +72,8 @@ public final class Constants {
         public static final double kFF = 0;
         public static final double kMaxOutput = .01D;
         public static final double kMinOutput = -.01D;
-        public static final double maxAngle = 0;
-        public static final double minAngle = -11;
+        public static final double maxAngle = 0.3;
+        public static final double minAngle = -11.4;
     }
 
     public static final class Index {
@@ -66,8 +81,18 @@ public final class Constants {
     }
 
     public static final class Climber {
-        public static final int rightWinchPort = 3;
-        public static final int leftWinchPort = 7;
+        public static final int rightWinchPort = 30;
+        public static final int leftWinchPort = 31;
+        public static final int babyHooksPort = 17;
+
+        // PID values for arm position feedback
+        public static final double kP = 0.1D;
+        public static final double kI = 1e-4;
+        public static final double kD = 1;
+        public static final double kIZone = 0;
+        public static final double kFF = 0;
+        public static final double kMaxOutput = .01D;
+        public static final double kMinOutput = -.01D;
     }
 
 }
