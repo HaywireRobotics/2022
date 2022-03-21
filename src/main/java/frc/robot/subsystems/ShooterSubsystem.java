@@ -40,11 +40,11 @@ public class ShooterSubsystem extends SubsystemBase{
         this.shootPID.setOutputRange(Constants.Shooter.kMinOutput, Constants.Shooter.kMaxOutput);
 
         // set up data logging
-        this.pointsUntilReady = 20;
+        this.pointsUntilReady = 60;
         this.lastData = (List<Double>)(new ArrayList<Double>());
 
         this.setPoint = 0.0D; // given value in ShootCommand when run in velocity mode
-        this.marginOfError = 100.0D;
+        this.marginOfError = 50.0D;
     }
 
     public void runShootMotorPercent(double speed) {

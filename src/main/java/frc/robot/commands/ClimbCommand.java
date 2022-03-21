@@ -1,20 +1,30 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimbSubsystem;
 
 public class ClimbCommand extends CommandBase{
     public final ClimbSubsystem m_subsystem;
-    public final double speed;
+    public final Joystick leftStick;
 
-    public ClimbCommand(double _speed, ClimbSubsystem subsystem) {
+    public ClimbCommand(ClimbSubsystem subsystem, Joystick leftStick) {
         this.m_subsystem = subsystem;
-        this.speed = _speed;
+        this.leftStick = leftStick;
+
+        addRequirements(subsystem);
     }
 
     @Override
     public void execute() {
-        m_subsystem.driveWinch(speed);
+        double val = this.leftStick.getY();
+        if (val > 0.4D) {
+            m_subsystem.driveWinch(-0.75D);
+        } else if (val < -0.4D) {
+            m_subsystem.driveWinch(0.75D);
+        } else {
+            m_subsystem.driveWinch(0.0D);
+        }
     }
 
     @Override

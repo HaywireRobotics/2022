@@ -19,7 +19,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.MoveArmCommand;
-import frc.robot.commands.RunIndexCommand;
+import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexSubsystem;
@@ -67,7 +67,9 @@ public class RobotContainer {
     this.m_shooterSubsystem = new ShooterSubsystem();
     this.m_intakeSubsystem = new IntakeSubsystem();
     this.m_indexSubsystem = new IndexSubsystem();
+    this.m_indexSubsystem.setDefaultCommand(new IndexCommand(this.m_indexSubsystem, manipulatorRightStick));
     this.m_climbSubsystem = new ClimbSubsystem();
+    this.m_climbSubsystem.setDefaultCommand(new ClimbCommand(this.m_climbSubsystem, manipulatorLeftStick));
 
     this.testShooterSpeed = 0;
     SmartDashboard.putNumber("TestShooterSpeed", this.testShooterSpeed);
@@ -76,7 +78,7 @@ public class RobotContainer {
 
     this.autoCommandChooser.addOption("Test", 0);
     this.autoCommandChooser.addOption("LoopDeLoop", 1);
-    String[] files = {"Test.wpilib.json", "loopdelooptest.wpilib.json"};
+    String[] files = {"Test.wpilib.json", "loopdelooptest.wpilib.json", "auto1.wpilib.json"};
     for (int i = 0; i < files.length; i++) {
       String trajectoryJSON = "paths/output/" + files[i];
       Trajectory trajectory = new Trajectory();
@@ -101,30 +103,26 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    new JoystickButton(driverRightStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
-    new JoystickButton(driverRightStick, 2).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
+    new JoystickButton(driverRightStick, 1).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
+    new JoystickButton(manipulatorRightStick, 1).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
     new JoystickButton(driverRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
+    new JoystickButton(manipulatorRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
 
-    new JoystickButton(driverLeftStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
-    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-.15D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 6).whenPressed(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
     new JoystickButton(driverLeftStick, 3).whileHeld(new MoveArmCommand(0.15D, m_intakeSubsystem));
+    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new MoveArmCommand(0.15D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-0.15D, m_intakeSubsystem));
+    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new MoveArmCommand(-0.15D, m_intakeSubsystem));
 
-    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(0.2D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(0.4D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(0.6D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(0.8D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 6).whileHeld(new ClimbCommand(-0.75D, m_climbSubsystem));
-    new JoystickButton(manipulatorRightStick, 7).whileHeld(new ClimbCommand(0.75D, m_climbSubsystem));
-    new JoystickButton(manipulatorRightStick, 10).whileHeld(new BabyHooksCommand(-.16, m_climbSubsystem));
-    new JoystickButton(manipulatorRightStick, 11).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
+    new JoystickButton(manipulatorRightStick, 8).whileHeld(new BabyHooksCommand(-0.16, m_climbSubsystem));
+    new JoystickButton(manipulatorRightStick, 9).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
 
-    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(2000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(3000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(4000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(5000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(2400, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(3200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,4).whileHeld(new ShootCommand(3500, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(4000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 8).whileHeld(new RunIndexCommand(0.4D, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 9).whileHeld(new RunIndexCommand(-0.4D, m_indexSubsystem));
   }
 
   public Command getAutonomousCommand() {
