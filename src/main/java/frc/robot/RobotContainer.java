@@ -4,7 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.BabyHooksCommand;
@@ -19,6 +26,7 @@ import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.r2goBrrrrr;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,6 +44,7 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem;
   private final DriveCommand m_autoCommand;
   private SendableChooser<Integer> autoCommandChooser = new SendableChooser<Integer>();
+  private List<Trajectory> paths = new ArrayList<Trajectory>();
   private final ShooterSubsystem m_shooterSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
   private final IndexSubsystem m_indexSubsystem;
@@ -48,8 +57,7 @@ public class RobotContainer {
 
   public double testShooterSpeed;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  public <Sendable> RobotContainer() {
     System.out.println("Starting Robot Container Construction");
 
     this.m_driveSubsystem = new DriveSubsystem();
@@ -64,28 +72,51 @@ public class RobotContainer {
     this.testShooterSpeed = 0;
     SmartDashboard.putNumber("TestShooterSpeed", this.testShooterSpeed);
 
-    configureButtonBindings(); 
+    configureButtonBindings();
+
+    this.autoCommandChooser.addOption("Test", 0);
+    this.autoCommandChooser.addOption("LoopDeLoop", 1);
+    String[] files = {"Test.wpilib.json", "loopdelooptest.wpilib.json"};
+    for (int i = 0; i < files.length; i++) {
+      String trajectoryJSON = "paths/output/" + files[i];
+      Trajectory trajectory = new Trajectory();
+      try {
+        System.out.println("Getting " + files[i]);
+        Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+        trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      } catch (IOException ex) {
+        System.out.println("Unable to load file" + files[i]);
+      }  
+      List<Trajectory.State> states = trajectory.getStates();
+      Trajectory.State lastState = states.get(states.size()-1);
+      lastState.accelerationMetersPerSecondSq = 0.0;
+      lastState.curvatureRadPerMeter = 0.0;
+      lastState.velocityMetersPerSecond = 0.0;
+      this.paths.add(trajectory);
+    }
+
+    // SmartDashboard.putData("Auto mode", (Sendable)this.autoCommandChooser);
 
     System.out.println("End of Robot Container Constructor");
   }
 
   private void configureButtonBindings() {
     new JoystickButton(driverRightStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
-    new JoystickButton(driverRightStick, 2).whileHeld(new IntakeCommand(0.5D, m_intakeSubsystem));
-    new JoystickButton(driverRightStick, 3).whileHeld(new IntakeCommand(-0.5D, m_intakeSubsystem));
+    new JoystickButton(driverRightStick, 2).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
+    new JoystickButton(driverRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
 
     new JoystickButton(driverLeftStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
-    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-.07D, m_intakeSubsystem));
-    new JoystickButton(driverLeftStick, 3).whileHeld(new MoveArmCommand(0.07D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-.15D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 3).whileHeld(new MoveArmCommand(0.15D, m_intakeSubsystem));
 
     new JoystickButton(manipulatorRightStick, 2).whileHeld(new ShootCommand(0.2D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorRightStick, 3).whileHeld(new ShootCommand(0.4D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorRightStick, 4).whileHeld(new ShootCommand(0.6D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorRightStick, 5).whileHeld(new ShootCommand(0.8D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 6).whileHeld(new ClimbCommand(-0.5D, m_climbSubsystem));
+    new JoystickButton(manipulatorRightStick, 6).whileHeld(new ClimbCommand(-0.75D, m_climbSubsystem));
     new JoystickButton(manipulatorRightStick, 7).whileHeld(new ClimbCommand(0.75D, m_climbSubsystem));
-    new JoystickButton(manipulatorRightStick, 10).whileHeld(new BabyHooksCommand(-0.06, m_climbSubsystem));
-    new JoystickButton(manipulatorRightStick, 11).whileHeld(new BabyHooksCommand(0.06, m_climbSubsystem));
+    new JoystickButton(manipulatorRightStick, 10).whileHeld(new BabyHooksCommand(-.16, m_climbSubsystem));
+    new JoystickButton(manipulatorRightStick, 11).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
 
     new JoystickButton(manipulatorLeftStick, 2).whileHeld(new ShootCommand(2000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorLeftStick, 3).whileHeld(new ShootCommand(3000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
@@ -97,8 +128,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    int trajectoryIdx = this.autoCommandChooser.getSelected();
+
+    Trajectory trajectory = paths.get(trajectoryIdx);
+    return new r2goBrrrrr(this.m_driveSubsystem, trajectory);
   }
 
   // @Override

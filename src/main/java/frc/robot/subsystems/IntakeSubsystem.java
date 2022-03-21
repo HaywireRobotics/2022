@@ -49,7 +49,8 @@ public class IntakeSubsystem extends SubsystemBase{
         double angle = armEncoder.getPosition();
         if (speed < 0 && angle > Constants.Intake.minAngle) {
             armMotor.set(speed);
-        } else if (speed > 0 && angle < Constants.Intake.maxAngle) {
+        }
+        if (speed > 0 && angle < Constants.Intake.maxAngle) {
             armMotor.set(speed);
         }
     }

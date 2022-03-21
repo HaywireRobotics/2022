@@ -31,12 +31,13 @@ public final class Constants {
 
         // update these bois later
 
-        public static final double ksVolts = 0.173;
-        public static final double kvVoltsSecondsPerMeter = 2.78;
-        public static final double kaVoltSecondsSquarePerMeter = 0.509;
-        public static final double kP = 0.00362/10 * 0.75; //0.0000238; //2.38;
+        public static final double ksVolts = 0.21555;
+        public static final double kvVoltsSecondsPerMeter = 1.6104;
+        public static final double kaVoltSecondsSquarePerMeter = 0.22869;
+        public static final double kP = 3.3397e-09;
         public static final double kD = 0.0D;
-        public static final double kFF = 0.000015*10*10*0.15;        public static final double kTrackwidthMeters = 1.22388; // check here if circlessss
+        public static final double kFF = 0.000015*10*10*0.15;        
+        public static final double kTrackwidthMeters = .5842; // check here if circlessss
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
         public static final double kMaxSpeedMetersPerSecond = 1.5;
         public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
@@ -84,15 +85,6 @@ public final class Constants {
         public static final int rightWinchPort = 30;
         public static final int leftWinchPort = 31;
         public static final int babyHooksPort = 17;
-
-        // PID values for arm position feedback
-        public static final double kP = 0.1D;
-        public static final double kI = 1e-4;
-        public static final double kD = 1;
-        public static final double kIZone = 0;
-        public static final double kFF = 0;
-        public static final double kMaxOutput = .01D;
-        public static final double kMinOutput = -.01D;
     }
 
 }

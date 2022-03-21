@@ -10,6 +10,7 @@ public class BabyHooksCommand extends CommandBase{
     public BabyHooksCommand(double speed, ClimbSubsystem subsystem) {  // btw pls keep speed very low k thx luv u <3
         this.m_subsystem = subsystem;
         this.speed = speed;
+        // TODO: Missing addRequirements
     }
 
     @Override

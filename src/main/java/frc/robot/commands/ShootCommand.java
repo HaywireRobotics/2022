@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -11,7 +13,7 @@ public class ShootCommand extends CommandBase {
     private final IndexSubsystem m_index;
     private final double shooterSpeed;
     private final boolean percentMode;
-    private boolean reachedSpeed;
+    private final Timer shootTimer;
 
     public ShootCommand(double speed, boolean _percentMode, ShooterSubsystem subsystem, IntakeSubsystem intake, IndexSubsystem index) {
         this.m_subsystem = subsystem;
@@ -19,7 +21,7 @@ public class ShootCommand extends CommandBase {
         this.m_index = index;
         this.shooterSpeed = speed;
         this.percentMode = _percentMode;
-        this.reachedSpeed = false;
+        this.shootTimer = new Timer();
     }
 
     @Override
@@ -37,9 +39,12 @@ public class ShootCommand extends CommandBase {
             m_subsystem.setSetPoint(-shooterSpeed);
             m_subsystem.runPID();
             // when the shooter is running at the setpoint speed, the intake and index will drive to shoot the balls
-            if (m_subsystem.isReady()) {
-                m_index.driveIndex(-0.4D);
+            if (m_subsystem.isReady() && shootTimer.hasElapsed(0.5)) {
+                m_index.driveIndex(0.4D);
                 m_intake.driveIntake(0.4D);
+            } else if (m_subsystem.isReady()) {
+                m_index.driveIndex(0.4D);
+                shootTimer.start();
             }
         }
     }

@@ -25,7 +25,7 @@ public class ClimbSubsystem extends SubsystemBase{
     }
 
     public void driveWinch(double speed) { // which one is negative will probly need to change lol
-        leftWinch.set(speed);
+        leftWinch.set(-speed);
         rightWinch.set(speed);
     }
 
