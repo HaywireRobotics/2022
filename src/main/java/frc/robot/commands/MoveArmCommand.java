@@ -21,4 +21,9 @@ public class MoveArmCommand extends CommandBase{
     public void end(boolean interupted) {
         m_subsystem.stopArm();
     }
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

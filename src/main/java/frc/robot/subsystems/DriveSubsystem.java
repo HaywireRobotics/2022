@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -55,10 +57,12 @@ public class DriveSubsystem extends SubsystemBase {
     this.myRobot = new DifferentialDrive(this.leftFront, this.rightFront);
     this.forward = true;
 
-    this.leftEncoder = this.leftFront.getEncoder();
-    this.rightEncoder = this.rightFront.getEncoder();
     this.leftController = this.leftFront.getPIDController();
     this.rightController = this.rightFront.getPIDController();
+    this.leftEncoder = this.leftFront.getEncoder();
+    this.rightEncoder = this.rightFront.getEncoder();
+    this.leftEncoder.setPositionConversionFactor(Constants.Drive.kEncoderConversionFactor);
+    this.rightEncoder.setPositionConversionFactor(Constants.Drive.kEncoderConversionFactor);
 
     this.leftController.setP(Constants.Drive.kP);
     this.rightController.setP(Constants.Drive.kP);
@@ -72,8 +76,33 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-  }
+    if (forward) {
+       odometry.update(gyro.getRotation2d().times(1.0), leftEncoder.getPosition(), -rightEncoder.getPosition());
+    } else {
+       odometry.update(gyro.getRotation2d().times(1.0), rightEncoder.getPosition(), -leftEncoder.getPosition());
+    }
+    if (true) {
+   double leftEncoderPosition = leftEncoder.getPosition();
+   double rightEncoderPosition = rightEncoder.getPosition();
+   double leftVelocity = leftEncoder.getVelocity();
+   double rightVelocity = -rightEncoder.getVelocity();
+   double leftLeadAppliedOutput = leftFront.getAppliedOutput();
+   double leftFollowAppliedOutput = leftBack.getAppliedOutput();
+   double rightLeadAppliedOutput = rightFront.getAppliedOutput();
+   double rightFollowAppliedOutput = rightBack.getAppliedOutput();
+
+    SmartDashboard.putNumber("Rotation", odometry.getPoseMeters().getRotation().getDegrees() );
+    SmartDashboard.putNumber("Translation X", odometry.getPoseMeters().getTranslation().getX());
+    // SmartDashboard.putNumber("Translation X", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Translation Y", odometry.getPoseMeters().getTranslation().getY());
+    // SmartDashboard.putNumber("Translation Y", rightEncoder.getPosition());
+
+    SmartDashboard.putNumber("Left Wheel Velocity", leftVelocity);
+    SmartDashboard.putNumber("Right Wheel Velocity", rightVelocity);  
+
+    SmartDashboard.putNumber("Gyro Position", gyro.getAngle());
+
+ }}
 
   public void tankDrive(double leftPower, double rightPower) {
     if (forward) {

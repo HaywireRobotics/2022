@@ -14,6 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Auto1Command;
 import frc.robot.commands.BabyHooksCommand;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
@@ -26,8 +27,11 @@ import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.r2SetOdometry;
 import frc.robot.commands.r2goBrrrrr;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
@@ -54,6 +58,7 @@ public class RobotContainer {
   public static final Joystick driverLeftStick = new Joystick(0);
   public static final Joystick manipulatorRightStick = new Joystick(3);
   public static final Joystick manipulatorLeftStick = new Joystick(2);
+  public static final JoystickButton manipulatorButton = new JoystickButton(manipulatorRightStick, 10);
 
   public double testShooterSpeed;
 
@@ -69,15 +74,16 @@ public class RobotContainer {
     this.m_indexSubsystem = new IndexSubsystem();
     this.m_indexSubsystem.setDefaultCommand(new IndexCommand(this.m_indexSubsystem, manipulatorRightStick));
     this.m_climbSubsystem = new ClimbSubsystem();
-    this.m_climbSubsystem.setDefaultCommand(new ClimbCommand(this.m_climbSubsystem, manipulatorLeftStick));
+    this.m_climbSubsystem.setDefaultCommand(new ClimbCommand(this.m_climbSubsystem, manipulatorLeftStick, manipulatorButton));
 
     this.testShooterSpeed = 0;
     SmartDashboard.putNumber("TestShooterSpeed", this.testShooterSpeed);
 
     configureButtonBindings();
 
-    this.autoCommandChooser.addOption("Test", 0);
+    this.autoCommandChooser.setDefaultOption("Test", 0);
     this.autoCommandChooser.addOption("LoopDeLoop", 1);
+    this.autoCommandChooser.addOption("Auto1", 2);
     String[] files = {"Test.wpilib.json", "loopdelooptest.wpilib.json", "auto1.wpilib.json"};
     for (int i = 0; i < files.length; i++) {
       String trajectoryJSON = "paths/output/" + files[i];
@@ -96,10 +102,21 @@ public class RobotContainer {
       lastState.velocityMetersPerSecond = 0.0;
       this.paths.add(trajectory);
     }
-
-    // SmartDashboard.putData("Auto mode", (Sendable)this.autoCommandChooser);
+    SmartDashboard.putData("Auto mode", this.autoCommandChooser);
 
     System.out.println("End of Robot Container Constructor");
+  }
+
+  public Command getAutonomousCommand() {
+    int trajectoryIdx = autoCommandChooser.getSelected();
+
+    Trajectory trajectory = paths.get(trajectoryIdx);
+    
+    if (trajectoryIdx == 2) {
+      return new Auto1Command(m_driveSubsystem, m_intakeSubsystem, m_indexSubsystem, m_shooterSubsystem, trajectory);
+    } else {
+      return new r2goBrrrrr(m_driveSubsystem, trajectory);
+    }
   }
 
   private void configureButtonBindings() {
@@ -119,21 +136,10 @@ public class RobotContainer {
     new JoystickButton(manipulatorRightStick, 9).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
 
     new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(2400, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(3200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(3350, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorRightStick,4).whileHeld(new ShootCommand(3500, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(4000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(3800, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 1).whileHeld(new ShootCommand(-0.1D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-  }
-
-  public Command getAutonomousCommand() {
-    int trajectoryIdx = this.autoCommandChooser.getSelected();
-
-    Trajectory trajectory = paths.get(trajectoryIdx);
-    return new r2goBrrrrr(this.m_driveSubsystem, trajectory);
-  }
-
-  // @Override
-  public void teleopPeriodic() {
-    testShooterSpeed = SmartDashboard.getNumber("TestShooterSpeed", 0);
   }
 }

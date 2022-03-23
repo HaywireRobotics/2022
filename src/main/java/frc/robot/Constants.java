@@ -34,7 +34,7 @@ public final class Constants {
         public static final double ksVolts = 0.21555;
         public static final double kvVoltsSecondsPerMeter = 1.6104;
         public static final double kaVoltSecondsSquarePerMeter = 0.22869;
-        public static final double kP = 3.3397e-09;
+        public static final double kP = 3.3397e-9 * 0.75;
         public static final double kD = 0.0D;
         public static final double kFF = 0.000015*10*10*0.15;        
         public static final double kTrackwidthMeters = .5842; // check here if circlessss
@@ -43,6 +43,8 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
+        public static final double kEncoderConversionFactor = (0.478 / 0.342) * 1.2*0.85694 * 1.125 *.8182 * 1.25;   
+        // public static final double kEncoderConversionFactor = 0.478;
     }
 
 
