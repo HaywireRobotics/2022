@@ -54,15 +54,14 @@ public class DriveSubsystem extends SubsystemBase {
     this.rightBack.restoreFactoryDefaults();
     this.leftBack.follow(this.leftFront);
     this.rightBack.follow(this.rightFront);
-    this.myRobot = new DifferentialDrive(this.leftFront, this.rightFront);
     this.forward = true;
 
     this.leftController = this.leftFront.getPIDController();
     this.rightController = this.rightFront.getPIDController();
     this.leftEncoder = this.leftFront.getEncoder();
     this.rightEncoder = this.rightFront.getEncoder();
-    this.leftEncoder.setPositionConversionFactor(Constants.Drive.kEncoderConversionFactor);
-    this.rightEncoder.setPositionConversionFactor(Constants.Drive.kEncoderConversionFactor);
+    this.leftEncoder.setPositionConversionFactor(Constants.Drive.kEncoderDistancePerPulse);
+    this.rightEncoder.setPositionConversionFactor(Constants.Drive.kEncoderDistancePerPulse);
 
     this.leftController.setP(Constants.Drive.kP);
     this.rightController.setP(Constants.Drive.kP);
@@ -71,7 +70,12 @@ public class DriveSubsystem extends SubsystemBase {
     this.leftController.setFF(Constants.Drive.kFF);
     this.rightController.setFF(Constants.Drive.kFF);
 
+    this.myRobot = new DifferentialDrive(this.leftFront, this.rightFront);
     this.odometry = new DifferentialDriveOdometry(gyro.getRotation2d().times(-1.0));
+  }
+
+  public void invertDrivetrain() {
+    forward = !forward;
   }
 
   @Override
@@ -118,10 +122,6 @@ public class DriveSubsystem extends SubsystemBase {
     leftBack.setVoltage(leftVolts);
     rightFront.setVoltage(rightVolts);
     rightBack.setVoltage(rightVolts);
-  }
-
-  public void invertDrivetrain() {
-    forward = !forward;
   }
 
   public void toggleIdle() {

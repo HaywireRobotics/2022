@@ -39,11 +39,13 @@ public class ShootCommand extends CommandBase {
             m_subsystem.setSetPoint(-shooterSpeed);
             m_subsystem.runPID();
             // when the shooter is running at the setpoint speed, the intake and index will drive to shoot the balls
-            if (m_subsystem.isReady() && shootTimer.hasElapsed(.7)) {
+            if (m_subsystem.isReady() && shootTimer.hasElapsed(.8)) {
                 m_index.driveIndex(0.4D);
                 m_intake.driveIntake(0.4D);
-            } else if (m_subsystem.isReady()) {
+            } else if (m_subsystem.isReady() && shootTimer.hasElapsed(.2)) {
                 m_index.driveIndex(0.4D);
+            } else if (m_subsystem.isReady()) {
+                // m_index.driveIndex(0.4D);
                 shootTimer.start();
             }
         }

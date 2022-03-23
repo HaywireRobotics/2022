@@ -36,6 +36,7 @@ public class r2goBrrrrr extends SequentialCommandGroup {
 
   public r2goBrrrrr(DriveSubsystem m_subsystem, Trajectory trajectory) {
     this.m_subsystem = m_subsystem;
+    addRequirements(m_subsystem);
 
     this.ramseteCommand = new RamseteCommand(
       trajectory, 
