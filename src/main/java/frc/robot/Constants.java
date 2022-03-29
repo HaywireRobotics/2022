@@ -30,21 +30,28 @@ public final class Constants {
         public static final int leftBackPort = 22;
 
         // update these bois later
-
-        public static final double ksVolts = 0.21555;
-        public static final double kvVoltsSecondsPerMeter = 1.6104;
-        public static final double kaVoltSecondsSquarePerMeter = 0.22869;
-        public static final double kP = 3.3397e-9;
+        // it says meters but is kinda sorta inches but not really lol
+        // public static final double ksVolts = 0.15846;
+        // public static final double kvVoltsSecondsPerMeter = 0.073738;
+        // public static final double kaVoltSecondsSquarePerMeter = 0.013564;
+        public static final double ksVolts = 0.173;
+        public static final double kvVoltsSecondsPerMeter = 2.78;
+        public static final double kaVoltSecondsSquarePerMeter = 0.509;
+        public static final double kP = 2.5e-9;
+        // public static final double kP = 6e-5;
         public static final double kD = 0.0D;
         public static final double kFF = 0.000015*10*10*0.15;        
-        public static final double kTrackwidthMeters = .5842; // check here if circlessss
+        // public static final double kFF = 0.000015;        
+        // public static final double kTrackwidthMeters = .5842; // check here if circlessss
+        public static final double kTrackwidthMeters = .5842/7.5; // check here if circlessss
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-        public static final double kMaxSpeedMetersPerSecond = 1.5;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+        public static final double kMaxSpeedMetersPerSecond = 1.5*33;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5*33;
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
-        public static final double kEncoderDistancePerPulse = (0.478 / 0.342) * 1.2*0.85694 * 1.125 *.8182 * 1.25;   
-        // public static final double kEncoderConversionFactor = 0.478;
+        // public static final double kEncoderDistancePerPulse = (0.478 / 0.342) * 1.2*0.85694 * 1.125;   
+        // public static final double kEncoderDistancePerPulse = (18.85 / 42) * (5/3) ;
+        public static final double kEncoderDistancePerPulse = 5.0 * (14.0/40.0);
     }
 
 
@@ -52,7 +59,7 @@ public final class Constants {
         public static final int shooterPort = 27;
 
         // parameters for PID controller
-        public static final double kP = 5.5e-5;
+        public static final double kP = 6.0e-5;
         public static final double kI = 5.5e-7;
         public static final double kD = 0.0D;
         public static final double kIZone = 0.0D;

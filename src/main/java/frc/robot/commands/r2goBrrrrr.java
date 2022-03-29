@@ -10,10 +10,11 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.*;
-
+ 
 
 
 public class r2goBrrrrr extends SequentialCommandGroup {
@@ -36,7 +37,7 @@ public class r2goBrrrrr extends SequentialCommandGroup {
 
   public r2goBrrrrr(DriveSubsystem m_subsystem, Trajectory trajectory) {
     this.m_subsystem = m_subsystem;
-    addRequirements(m_subsystem);
+    // addRequirements(m_subsystem);
 
     this.ramseteCommand = new RamseteCommand(
       trajectory, 
@@ -47,6 +48,7 @@ public class r2goBrrrrr extends SequentialCommandGroup {
       m_subsystem
     );
     this.m_subsystem.resetOdometry(trajectory.getInitialPose());
+    this.m_subsystem.brakeOn();
     this.trajectory = trajectory;
 
     addCommands(

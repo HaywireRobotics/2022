@@ -70,6 +70,9 @@ public class DriveSubsystem extends SubsystemBase {
     this.leftController.setFF(Constants.Drive.kFF);
     this.rightController.setFF(Constants.Drive.kFF);
 
+    this.rightEncoder.setVelocityConversionFactor(0.01);
+    this.leftEncoder.setVelocityConversionFactor(0.01);
+    
     this.myRobot = new DifferentialDrive(this.leftFront, this.rightFront);
     this.odometry = new DifferentialDriveOdometry(gyro.getRotation2d().times(-1.0));
   }
@@ -138,6 +141,13 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  public void brakeOn() {
+    leftFront.setIdleMode(IdleMode.kBrake);
+    leftBack.setIdleMode(IdleMode.kBrake);
+    rightFront.setIdleMode(IdleMode.kBrake);
+    rightBack.setIdleMode(IdleMode.kBrake); 
+  }
+
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
@@ -185,9 +195,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
   public void setWheelVelocity(double left, double right) {
     // System.out.println("left: " + left + "right" + right);
+    // System.out.println("Output: " + leftFront.getAppliedOutput());
     forward = true;
-    leftController.setReference(left, CANSparkMax.ControlType.kVelocity);
-    rightController.setReference(-right, CANSparkMax.ControlType.kVelocity);
+    leftController.setReference(10.75*left, CANSparkMax.ControlType.kVelocity);
+    rightController.setReference(-10.75*right, CANSparkMax.ControlType.kVelocity);
   }
   public void setReverseWheelVelocity(double left, double right) {
     // System.out.println("left: " + left + "right" + right);
@@ -196,7 +207,7 @@ public class DriveSubsystem extends SubsystemBase {
     rightController.setReference(left, CANSparkMax.ControlType.kVelocity);
   }
   public double getHeading() {
-    return gyro.getRotation2d().times(-1.0).getDegrees();
+    return gyro.getRotation2d().times(1.0).getDegrees();
   }
 
   public double getTurnRate() {

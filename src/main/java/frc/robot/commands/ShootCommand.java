@@ -22,6 +22,8 @@ public class ShootCommand extends CommandBase {
         this.shooterSpeed = speed;
         this.percentMode = _percentMode;
         this.shootTimer = new Timer();
+
+        addRequirements(index);
     }
 
     @Override
@@ -42,10 +44,10 @@ public class ShootCommand extends CommandBase {
             if (m_subsystem.isReady() && shootTimer.hasElapsed(.8)) {
                 m_index.driveIndex(0.4D);
                 m_intake.driveIntake(0.4D);
-            } else if (m_subsystem.isReady() && shootTimer.hasElapsed(.2)) {
-                m_index.driveIndex(0.4D);
+            // } else if (m_subsystem.isReady() && shootTimer.hasElapsed(.2)) {
+            //     m_index.driveIndex(0.4D);
             } else if (m_subsystem.isReady()) {
-                // m_index.driveIndex(0.4D);
+                m_index.driveIndex(0.4D);
                 shootTimer.start();
             }
         }

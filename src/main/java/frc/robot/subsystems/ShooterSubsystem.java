@@ -40,11 +40,11 @@ public class ShooterSubsystem extends SubsystemBase{
         this.shootPID.setOutputRange(Constants.Shooter.kMinOutput, Constants.Shooter.kMaxOutput);
 
         // set up data logging
-        this.pointsUntilReady = 70;
+        this.pointsUntilReady = 75;
         this.lastData = (List<Double>)(new ArrayList<Double>());
 
         this.setPoint = 0.0D; // given value in ShootCommand when run in velocity mode
-        this.marginOfError = 50.0D;
+        this.marginOfError = 40.0D;
     }
 
     public void runShootMotorPercent(double speed) {
@@ -56,8 +56,10 @@ public class ShooterSubsystem extends SubsystemBase{
     }
 
     public final boolean isReady() {
-        boolean isOK = averageValue >= setPoint - marginOfError && averageValue <= setPoint + marginOfError;
-        return isOK;
+        boolean isOK1 = averageValue >= setPoint - marginOfError && averageValue <= setPoint + marginOfError;
+        double speed = getShooterSpeed();
+        boolean isOK2 = speed >= setPoint - marginOfError && speed <= setPoint + marginOfError;
+        return isOK1 && isOK2;
     }
 
     public final void setSetPoint(double _setPoint) {
