@@ -49,7 +49,11 @@ public class ShootCommand extends CommandBase {
             } else if (m_subsystem.isReady()) {
                 m_index.driveIndex(0.4D);
                 shootTimer.start();
-            }
+            } 
+            // else {
+            //     shootTimer.reset();
+            //     shootTimer.stop();
+            // }
         }
     }
 

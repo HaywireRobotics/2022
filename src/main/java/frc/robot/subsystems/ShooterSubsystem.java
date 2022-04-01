@@ -21,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final Integer pointsUntilReady;
     private List<Double> lastData;
     private double averageValue;
+    private boolean driverIsReady;
 
     private double setPoint;
     private double marginOfError;
@@ -45,6 +46,7 @@ public class ShooterSubsystem extends SubsystemBase{
 
         this.setPoint = 0.0D; // given value in ShootCommand when run in velocity mode
         this.marginOfError = 40.0D;
+        this.driverIsReady = false;
     }
 
     public void runShootMotorPercent(double speed) {
@@ -60,6 +62,10 @@ public class ShooterSubsystem extends SubsystemBase{
         double speed = getShooterSpeed();
         boolean isOK2 = speed >= setPoint - marginOfError && speed <= setPoint + marginOfError;
         return isOK1 && isOK2;
+    }
+
+    public final void driverReady(boolean val) {
+        driverIsReady = val;
     }
 
     public final void setSetPoint(double _setPoint) {

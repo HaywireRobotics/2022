@@ -14,6 +14,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Auto1Command;
 import frc.robot.commands.Auto2Command;
 import frc.robot.commands.Auto3Command;
 import frc.robot.commands.BabyHooksCommand;
@@ -21,6 +22,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.MoveArmCommand;
+import frc.robot.commands.ReadyToShootCommand;
 import frc.robot.commands.IndexCommand;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -82,11 +84,10 @@ public class RobotContainer {
 
     configureButtonBindings();
 
-    this.autoCommandChooser.setDefaultOption("Test", 0);
-    this.autoCommandChooser.addOption("LoopDeLoop", 1);
-    this.autoCommandChooser.addOption("Auto2", 2);
-    this.autoCommandChooser.addOption("Auto3", 3);
-    String[] files = {"Test.wpilib.json", "loopdelooptest.wpilib.json", "auto1.wpilib.json", "Test.wpilib.json"};
+    this.autoCommandChooser.setDefaultOption("Auto2", 0);
+    this.autoCommandChooser.addOption("DO NOT USE   Auto3", 1);
+    this.autoCommandChooser.addOption("Auto 1", 2);
+    String[] files = {"auto1.wpilib.json", "Test.wpilib.json", "Test.wpilib.json"};
     for (int i = 0; i < files.length; i++) {
       String trajectoryJSON = "paths/output/" + files[i];
       Trajectory trajectory = new Trajectory();
@@ -114,10 +115,12 @@ public class RobotContainer {
 
     Trajectory trajectory = paths.get(trajectoryIdx);
     
-    if (trajectoryIdx == 2) {
+    if (trajectoryIdx == 0) {
       return new Auto2Command(m_driveSubsystem, m_intakeSubsystem, m_indexSubsystem, m_shooterSubsystem, trajectory);
-    } else if (trajectoryIdx == 3) {
+    } else if (trajectoryIdx == 1) {
       return new Auto3Command(m_driveSubsystem, m_intakeSubsystem, m_indexSubsystem, m_shooterSubsystem, trajectory);
+    } else if (trajectoryIdx == 2) {
+      return new Auto1Command(m_driveSubsystem, m_intakeSubsystem, m_indexSubsystem, m_shooterSubsystem, trajectory);
     } else {
       return new r2goBrrrrr(m_driveSubsystem, trajectory);
     }
@@ -131,10 +134,10 @@ public class RobotContainer {
     new JoystickButton(manipulatorRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
 
     new JoystickButton(driverLeftStick, 6).whenPressed(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
-    new JoystickButton(driverLeftStick, 3).whileHeld(new MoveArmCommand(0.15D, m_intakeSubsystem));
-    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new MoveArmCommand(0.15D, m_intakeSubsystem));
-    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-0.15D, m_intakeSubsystem));
-    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new MoveArmCommand(-0.15D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 3).whileHeld(new MoveArmCommand(0.22D, m_intakeSubsystem));
+    new JoystickButton(manipulatorLeftStick, 3).whileHeld(new MoveArmCommand(0.22D, m_intakeSubsystem));
+    new JoystickButton(driverLeftStick, 2).whileHeld(new MoveArmCommand(-0.22D, m_intakeSubsystem));
+    new JoystickButton(manipulatorLeftStick, 2).whileHeld(new MoveArmCommand(-0.22D, m_intakeSubsystem));
 
     new JoystickButton(manipulatorRightStick, 8).whileHeld(new BabyHooksCommand(-0.16, m_climbSubsystem));
     new JoystickButton(manipulatorRightStick, 9).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
@@ -145,5 +148,6 @@ public class RobotContainer {
     new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(5000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorLeftStick, 1).whileHeld(new ShootCommand(-0.1D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
     new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ReadyToShootCommand(this.m_shooterSubsystem));
   }
 }

@@ -18,9 +18,9 @@ public class IndexCommand extends CommandBase{
     @Override
     public void execute() {
         double val = rightStick.getY();
-        if (val > 0.4D) {
+        if (val > 0.5D) {
             m_subsystem.driveIndex(0.35D);
-        } else if (val < -0.4D) {
+        } else if (val < -0.5D) {
             m_subsystem.driveIndex(-0.35D);
         } else {
             m_subsystem.driveIndex(0.0D);

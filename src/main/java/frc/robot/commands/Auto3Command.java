@@ -1,3 +1,5 @@
+// watch as I pull a pro gamer move and fix this on the bus ride there and then it works flawlessly first try :)
+
 package frc.robot.commands;
 
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -26,24 +28,20 @@ public class Auto3Command extends SequentialCommandGroup{
         this.trajectory = _trajectory;
 
         andThen(new InstantCommand(m_driveSubsystem::brakeOn, m_driveSubsystem));
-        andThen(new ShootCommand(3900, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(3));
-        andThen(new DriveAutoCommand(m_driveSubsystem, 0.4, -0.4).withTimeout(1.9));
         andThen(new MoveArmCommand(-0.2, m_intakeSubsystem).withTimeout(0.8));
-        andThen(new InstantCommand(m_driveSubsystem::zeroHeading, m_driveSubsystem));
-        andThen(CommandGroupBase.deadline(new r2goBrrrrr(m_driveSubsystem, trajectory),
-                new IntakeCommand(0.7D, m_intakeSubsystem)));
-    //     andThen(CommandGroupBase.deadline(new DriveAutoCommand(m_driveSubsystem, -0.5, -0.5).withTimeout(2.2), 
-    //                                     new IntakeCommand(0.8D, m_intakeSubsystem)));
-    //     // andThen(new FlipAroundCommand(m_driveSubsystem));
-    //     andThen(new DriveAutoCommand(m_driveSubsystem, -0.4, 0.4).withTimeout(1.15));
-    //    // andThen(new MoveArmCommand(0.2, m_intakeSubsystem).withTimeout(0.9));
-    //    // andThen(new DriveAutoCommand(m_driveSubsystem, -0.5, -0.5).withTimeout(2.1));
-    //    andThen(CommandGroupBase.deadline(new DriveAutoCommand(m_driveSubsystem, -0.5, -0.5).withTimeout(3), 
-                                        // new IntakeCommand(0.8D, m_intakeSubsystem)));
-        // andThen(new DriveAutoCommand(m_driveSubsystem, -0.4, 0.4).withTimeout(1.2));
-        andThen(new MoveArmCommand(0.2, m_intakeSubsystem).withTimeout(0.9));
-        // andThen(new DriveAutoCommand(m_driveSubsystem, -0.5, -0.5).withTimeout(1.76));
-        andThen(new ShootCommand(3900, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(5));
+        andThen(CommandGroupBase.deadline(new DriveDistanceCommand(m_driveSubsystem, 30, 0.6),
+                                          new IntakeCommand(0.8, m_intakeSubsystem)));
+        andThen(new IntakeCommand(0.8, m_intakeSubsystem).withTimeout(0.4));
+        andThen(new FlipAroundCommand(m_driveSubsystem, -160, -0.45));
+        andThen(new DriveDistanceCommand(m_driveSubsystem, 40, 0.65));
+        andThen(new ShootCommand(4200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(2.5));
+        andThen(new FlipAroundCommand(m_driveSubsystem, -100, 0.45));
+        andThen(CommandGroupBase.deadline(new DriveDistanceCommand(m_driveSubsystem, 120, 0.6),
+                                          new IntakeCommand(0.8, m_intakeSubsystem)));
+        andThen(new IntakeCommand(0.8, m_intakeSubsystem).withTimeout(0.2));
+        andThen(new FlipAroundCommand(m_driveSubsystem, 140, -0.5));
+        andThen(new DriveDistanceCommand(m_driveSubsystem, 70, 0.55));
+        andThen(new ShootCommand(4200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(5));
         andThen(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
     }
 }
