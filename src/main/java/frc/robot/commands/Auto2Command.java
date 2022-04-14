@@ -33,13 +33,13 @@ public class Auto2Command extends SequentialCommandGroup {
         andThen(CommandGroupBase.deadline(new DriveDistanceCommand(m_driveSubsystem, 54, 0.55), 
                                           new IntakeCommand(0.7D, m_intakeSubsystem)));
         andThen(new IntakeCommand(0.7D, m_intakeSubsystem).withTimeout(0.2));
-        andThen(new FlipAroundCommand(m_driveSubsystem, -150, -0.44));
+        andThen(new FlipAroundCommand(m_driveSubsystem, -148, -0.44));
         // andThen(new DriveAutoCommand(m_driveSubsystem, 0.4, -0.4).withTimeout(1.85));
         andThen(new MoveArmCommand(0.2, m_intakeSubsystem).withTimeout(1.05));
         andThen(new InstantCommand(m_driveSubsystem::resetOdo, m_driveSubsystem));
         andThen(new DriveDistanceCommand(m_driveSubsystem, 59, 0.55));
         // andThen(new DriveAutoCommand(m_driveSubsystem, -0.5, -0.5).withTimeout(2.1));
-        andThen(new ShootCommand(3825, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+        andThen(new ShootCommand(3800, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
         andThen(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
     }
 }

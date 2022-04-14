@@ -34,14 +34,14 @@ public class Auto3Command extends SequentialCommandGroup{
         andThen(new IntakeCommand(0.8, m_intakeSubsystem).withTimeout(0.4));
         andThen(new FlipAroundCommand(m_driveSubsystem, -160, -0.45));
         andThen(new DriveDistanceCommand(m_driveSubsystem, 40, 0.65));
-        andThen(new ShootCommand(4200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(2.5));
+        andThen(new ShootCommand(4200, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(2.5));
         andThen(new FlipAroundCommand(m_driveSubsystem, -100, 0.45));
         andThen(CommandGroupBase.deadline(new DriveDistanceCommand(m_driveSubsystem, 120, 0.6),
                                           new IntakeCommand(0.8, m_intakeSubsystem)));
         andThen(new IntakeCommand(0.8, m_intakeSubsystem).withTimeout(0.2));
         andThen(new FlipAroundCommand(m_driveSubsystem, 140, -0.5));
         andThen(new DriveDistanceCommand(m_driveSubsystem, 70, 0.55));
-        andThen(new ShootCommand(4200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(5));
+        andThen(new ShootCommand(4200, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(5));
         andThen(new InstantCommand(m_driveSubsystem::toggleIdle, m_driveSubsystem));
     }
 }

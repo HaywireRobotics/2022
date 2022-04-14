@@ -129,7 +129,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverLeftStick, 1).whenPressed(new InstantCommand(m_driveSubsystem::invertDrivetrain, m_driveSubsystem));
     new JoystickButton(driverRightStick, 1).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
-    new JoystickButton(manipulatorRightStick, 1).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
+    new JoystickButton(manipulatorRightStick, 2).whileHeld(new IntakeCommand(0.6D, m_intakeSubsystem));
     new JoystickButton(driverRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
     new JoystickButton(manipulatorRightStick, 3).whileHeld(new IntakeCommand(-0.6D, m_intakeSubsystem));
 
@@ -142,12 +142,18 @@ public class RobotContainer {
     new JoystickButton(manipulatorRightStick, 8).whileHeld(new BabyHooksCommand(-0.16, m_climbSubsystem));
     new JoystickButton(manipulatorRightStick, 9).whileHeld(new BabyHooksCommand(0.16, m_climbSubsystem));
 
-    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(2500, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(3500, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick,4).whileHeld(new ShootCommand(4200, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(5000, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 1).whileHeld(new ShootCommand(-0.1D, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
-    new JoystickButton(manipulatorRightStick, 2).whileHeld(new ReadyToShootCommand(this.m_shooterSubsystem));
+    new JoystickButton(manipulatorLeftStick, 4).whileHeld(new ShootCommand(2350, false, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 5).whileHeld(new ShootCommand(3500, false, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,4).whileHeld(new ShootCommand(4200, false, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,5).whileHeld(new ShootCommand(5000, false, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 1).whileHeld(new ShootCommand(-0.1D, true, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick, 6).whileHeld(new ShootCommand(this.testShooterSpeed, false, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 1).whileHeld(new ReadyToShootCommand(this.m_shooterSubsystem));
+  
+    new JoystickButton(manipulatorLeftStick,   7).whileHeld(new ShootCommand(2350, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorLeftStick,  10).whileHeld(new ShootCommand(3500, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick,  7).whileHeld(new ShootCommand(4200, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    new JoystickButton(manipulatorRightStick, 10).whileHeld(new ShootCommand(5000, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem));
+    
   }
 }

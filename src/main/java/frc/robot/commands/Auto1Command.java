@@ -25,7 +25,8 @@ public class Auto1Command extends SequentialCommandGroup {
         this.m_shooterSubsystem = shooterSubsystem;
         this.trajectory = _trajectory;
 
-        andThen(new ShootCommand(3900, false, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(6));
-        andThen(new DriveDistanceCommand(m_driveSubsystem, -54, -0.5));
+        andThen(new InstantCommand(m_driveSubsystem::brakeOn, m_driveSubsystem));
+        andThen(new ShootCommand(3900, false, true, m_shooterSubsystem, m_intakeSubsystem, m_indexSubsystem).withTimeout(4.5));
+        andThen(new DriveDistanceCommand(m_driveSubsystem, -54, 0.5));
     }
 }

@@ -57,11 +57,15 @@ public class ShooterSubsystem extends SubsystemBase{
         return shootEncoder.getVelocity();
     }
 
-    public final boolean isReady() {
+    public final boolean isReadySpeed() {
         boolean isOK1 = averageValue >= setPoint - marginOfError && averageValue <= setPoint + marginOfError;
         double speed = getShooterSpeed();
         boolean isOK2 = speed >= setPoint - marginOfError && speed <= setPoint + marginOfError;
         return isOK1 && isOK2;
+    }
+
+    public final boolean isReadyDriver() {
+        return isReadySpeed() && driverIsReady;
     }
 
     public final void driverReady(boolean val) {
