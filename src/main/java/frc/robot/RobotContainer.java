@@ -85,7 +85,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     this.autoCommandChooser.setDefaultOption("Auto2", 0);
-    this.autoCommandChooser.addOption("DO NOT USE   Auto3", 1);
+    this.autoCommandChooser.addOption("Auto3", 1);
     this.autoCommandChooser.addOption("Auto 1", 2);
     String[] files = {"auto1.wpilib.json", "Test.wpilib.json", "Test.wpilib.json"};
     for (int i = 0; i < files.length; i++) {
