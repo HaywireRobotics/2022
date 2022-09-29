@@ -20,6 +20,7 @@ import frc.robot.commands.Auto3Command;
 import frc.robot.commands.BabyHooksCommand;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveCommandsHotterSister;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.MoveArmCommand;
 import frc.robot.commands.ReadyToShootCommand;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 //import frc.robot.Constants;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,7 +49,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem;
-  private final DriveCommand m_autoCommand;
+  // private final DriveCommand m_autoCommand;
   private SendableChooser<Integer> autoCommandChooser = new SendableChooser<Integer>();
   private List<Trajectory> paths = new ArrayList<Trajectory>();
   private final ShooterSubsystem m_shooterSubsystem;
@@ -62,6 +64,8 @@ public class RobotContainer {
   public static final Joystick manipulatorLeftStick = new Joystick(3);
   public static final JoystickButton manipulatorButton = new JoystickButton(manipulatorRightStick, 10);
 
+  public final XboxController xboxController = new XboxController(4);
+
   public double testShooterSpeed;
   public double testBackspinSpeed;
 
@@ -69,8 +73,9 @@ public class RobotContainer {
     System.out.println("Starting Robot Container Construction");
 
     this.m_driveSubsystem = new DriveSubsystem();
-    this.m_autoCommand = new DriveCommand(this.m_driveSubsystem, driverLeftStick, driverRightStick);
+    // this.m_autoCommand = new DriveCommand(this.m_driveSubsystem, driverLeftStick, driverRightStick);
     this.m_driveSubsystem.setDefaultCommand(new DriveCommand(this.m_driveSubsystem, driverLeftStick, driverRightStick));
+    // this.m_driveSubsystem.setDefaultCommand(new DriveCommandsHotterSister(this.m_driveSubsystem, xboxController));
     
     this.m_backspinSubsystem = new BackspinSubsystem();
     this.m_shooterSubsystem = new ShooterSubsystem();

@@ -113,9 +113,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void tankDrive(double leftPower, double rightPower) {
     if (forward) {
-      this.myRobot.tankDrive(-leftPower, rightPower, true);
+      this.myRobot.tankDrive(-leftPower, rightPower);
     } else {
-      this.myRobot.tankDrive(rightPower, -leftPower, true);
+      this.myRobot.tankDrive(rightPower, -leftPower);
     }
   }
 

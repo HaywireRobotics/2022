@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"}) // idk why this exists...
   private final DriveSubsystem m_subsystem;
   private final Joystick leftJoystick;
   private final Joystick rightJoystick;
@@ -37,8 +37,10 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     double leftPower = 0.0D;
     double rightPower = 0.0D;
+    
     double leftJoystickVal = this.leftJoystick.getY();
     double rightJoystickVal = this.rightJoystick.getY();
+
     if (leftJoystickVal > 0.15D) {
       leftPower = (leftJoystickVal - 0.15) / 1.0;
     } else if (leftJoystickVal < -0.15D) {
@@ -50,6 +52,7 @@ public class DriveCommand extends CommandBase {
     } else if (rightJoystickVal < -0.15D) {
        rightPower = (rightJoystickVal + 0.15) / 1.0;
     }
+
     m_subsystem.tankDrive(leftPower, rightPower);
   }
 

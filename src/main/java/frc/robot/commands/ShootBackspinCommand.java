@@ -9,6 +9,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootBackspinCommand extends ShootCommand {
 
+    // streamlines making shoot commands by automatically scaling the backspin speed
     public ShootBackspinCommand(double speed, boolean requiresReadyTrigger, ShooterSubsystem subsystem, IntakeSubsystem intake, IndexSubsystem index, BackspinSubsystem backspin) {
         super(speed, speed * Constants.Backspin.kBackspin, false, requiresReadyTrigger, subsystem, intake, index, backspin);
     }
